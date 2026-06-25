@@ -68,22 +68,6 @@ def M_thetaE(theta_E, D_L, D_S):
     M_L_theta = ((theta_E**2) / (kappa)) * (D_S * D_L / (D_S - D_L))
     return M_L_theta
 
-# def sigma_M_thetaE(theta_E, D_L, D_S):
-    """
-    Calculate the uncertainty in the lens mass based on the Einstein radius and distances.
-    
-    Parameters:
-    thetaE (float): Einstein radius in arcseconds
-    D_L (float): Lens distance in kpc
-    D_S (float): Source distance in kpc
-    
-    Returns:
-    float: Uncertainty in lens mass in solar masses
-    """
-    M_L_theta = M_thetaE(theta_E, D_L, D_S)
-    sigma_Mtheta = M_L_theta * ((2 * sigma_theta_E / theta_E)**2 + (sigma_D_S)**2 * ((1 / D_S) - (1 / (D_S - D_L)))**2 + (sigma_D_L)**2 * (((1 / D_L) + 1 / (D_S - D_L)))**2)**0.5
-    return sigma_Mtheta
-
 def M_piE(pi_E, D_L, D_S):
     """
     Calculate the lens mass based on the microlensing parallax and distances.
@@ -98,22 +82,6 @@ def M_piE(pi_E, D_L, D_S):
     """
     M_L_pi = ((D_S - D_L) / (D_S * D_L)) * (1 / (kappa * pi_E**2))
     return M_L_pi
-
-# def sigma_M_piE(pi_E, D_L, D_S):
-    """
-    Calculate the uncertainty in the lens mass based on the microlensing parallax and distances.
-    
-    Parameters:
-    piE (float): Microlensing parallax
-    D_L (float): Lens distance in kpc
-    D_S (float): Source distance in kpc
-    
-    Returns:
-    float: Uncertainty in lens mass in solar masses
-    """
-    M_L_pi = M_piE(pi_E, D_L, D_S)
-    sigma_Mpi = M_L_pi * ((2 * sigma_pi_E / pi_E)**2 + (sigma_D_L)**2 * ((-1 / (D_S - D_L)) - (1 / D_L))**2 + (sigma_D_S)**2 * ((-1 / D_S) + (1 / (D_S - D_L)))**2)**0.5
-    return sigma_Mpi
 
 def M_FL(D_L, F_L):
     """
