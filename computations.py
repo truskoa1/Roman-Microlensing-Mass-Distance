@@ -12,13 +12,7 @@ Returns:
 from mass_relations import theta_E, pi_E, F_L, M_thetaE, M_piE, M_FL, D_rel, pi_rel
 from fiducial_systems import systems
 
-def compute_derived_quantities(fiducial_system):
-    system = systems[fiducial_system]
-
-    M_L = system['M_L']
-    D_L = system['D_L']
-    D_S = system['D_S']
-
+def compute_derived_quantities(M_L, D_L, D_S=8.0):
 
     theta_E_val = theta_E(M_L, D_L, D_S)
     pi_E_val = pi_E(M_L, D_L, D_S)

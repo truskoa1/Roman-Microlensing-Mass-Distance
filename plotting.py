@@ -2,32 +2,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from mass_relations import F_L, M_FL, theta_E, pi_E, M_thetaE, M_piE
-from fiducial_systems import systems
 from uncertainties import sigmaM_FL, sigmaM_thetaE, sigmaM_piE
 
-def plot_mass_relation(system_name, method):
-    system = systems[system_name]
+def plot_mass_relation(M_L_fid, D_L_fid, method, D_S=8.0):
 
     # DL grid for the plot
-    DL_grid = np.linspace(0.1, system["D_S"] - 0.01, 1000)
+    DL_grid = np.linspace(0.1, D_S - 0.01, 1000)
 
     # Defining the different combinations of observables to plot to constrain the lens mass
     if method == "thetaE_piE":
 
         thetaE_fid = theta_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
         piE_fid = pi_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
-        M1 = M_thetaE(thetaE_fid, DL_grid, system["D_S"])
-        M2 = M_piE(piE_fid, DL_grid, system["D_S"])
+        M1 = M_thetaE(thetaE_fid, DL_grid, D_S)
+        M2 = M_piE(piE_fid, DL_grid, D_S)
 
         sigma_thetaE_fid = 0.1 * thetaE_fid
         sigma_piE_fid = 0.1 * piE_fid
@@ -48,17 +46,17 @@ def plot_mass_relation(system_name, method):
              
     elif method == "thetaE_FL":
         thetaE_fid = theta_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
         F_L_fid = F_L(
-            system["M_L"],
-            system["D_L"],   
+            M_L_fid,
+            D_L_fid,   
         )
 
-        M1 = M_thetaE(thetaE_fid, DL_grid, system["D_S"])
+        M1 = M_thetaE(thetaE_fid, DL_grid, D_S)
         M2 = M_FL(DL_grid, F_L_fid)
 
         sigma_F_L_fid = 0.1 * F_L_fid           #assuming 10% uncertainty
@@ -79,17 +77,17 @@ def plot_mass_relation(system_name, method):
 
     elif method == "piE_FL":
         piE_fid = pi_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
         F_L_fid = F_L(
-            system["M_L"],
-            system["D_L"],   
+            M_L_fid,
+            D_L_fid,   
         )
 
-        M1 = M_piE(piE_fid, DL_grid, system["D_S"])
+        M1 = M_piE(piE_fid, DL_grid, D_S)
         M2 = M_FL(DL_grid, F_L_fid)
 
         sigma_F_L_fid = 0.1 * F_L_fid           #assuming 10% uncertainty
@@ -110,14 +108,14 @@ def plot_mass_relation(system_name, method):
 
     elif method == "thetaE_knownDL":
         thetaE_fid = theta_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
-        D_L_fid = system["D_L"]
+        D_L_fid = D_L_fid
 
-        M1 = M_thetaE(thetaE_fid, DL_grid, system["D_S"])
+        M1 = M_thetaE(thetaE_fid, DL_grid, D_S)
         
         sigma_thetaE_fid = 0.1 * thetaE_fid           #assuming 10% uncertainty
         sigma_D_L_fid = 0.1 * D_L_fid                 #assuming 10% uncertainty
@@ -132,14 +130,14 @@ def plot_mass_relation(system_name, method):
 
     elif method == "piE_knownDL":
         piE_fid = pi_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
-        D_L_fid = system["D_L"]
+        D_L_fid = D_L_fid
 
-        M1 = M_piE(piE_fid, DL_grid, system["D_S"])
+        M1 = M_piE(piE_fid, DL_grid, D_S)
         
         sigma_piE_fid = 0.1 * piE_fid           #assuming 10% uncertainty
         sigma_D_L_fid = 0.1 * D_L_fid                 #assuming 10% uncertainty
@@ -150,30 +148,30 @@ def plot_mass_relation(system_name, method):
             sigma_piE_fid,      # uncertainty in pi_E           
         )
 
-        M1 = M_piE(piE_fid, DL_grid, system["D_S"])
+        M1 = M_piE(piE_fid, DL_grid, D_S)
 
         title = r'$\pi_E$ and Known $D_L$ Constraints on Lens Mass'
 
     elif method == "thetaE_piE_FL":
         thetaE_fid = theta_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
         piE_fid = pi_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
         F_L_fid = F_L(
-            system["M_L"],
-            system["D_L"],   
+            M_L_fid,
+            D_L_fid,   
         )
 
-        M1 = M_thetaE(thetaE_fid, DL_grid, system["D_S"])
-        M2 = M_piE(piE_fid, DL_grid, system["D_S"])
+        M1 = M_thetaE(thetaE_fid, DL_grid, D_S)
+        M2 = M_piE(piE_fid, DL_grid, D_S)
         M3 = M_FL(DL_grid, F_L_fid)
 
         sigma_thetaE_fid = 0.1 * thetaE_fid           #assuming 10% uncertainty
@@ -200,20 +198,20 @@ def plot_mass_relation(system_name, method):
     
     elif method == "thetaE_piE_knownDL":
         thetaE_fid = theta_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
         piE_fid = pi_E(
-            system["M_L"],
-            system["D_L"],
-            system["D_S"]
+            M_L_fid,
+            D_L_fid,
+            D_S
         )
 
-        D_L_fid = system["D_L"]
-        M1 = M_thetaE(thetaE_fid, DL_grid, system["D_S"])
-        M2 = M_piE(piE_fid, DL_grid, system["D_S"])
+        D_L_fid = D_L_fid
+        M1 = M_thetaE(thetaE_fid, DL_grid, D_S)
+        M2 = M_piE(piE_fid, DL_grid, D_S)
 
         sigma_thetaE_fid = 0.1 * thetaE_fid           #assuming 10% uncertainty
         sigma_piE_fid = 0.1 * piE_fid           #assuming 10% uncertainty
@@ -387,7 +385,7 @@ def plot_mass_relation(system_name, method):
         plt.plot(DL_grid, M1)
         plt.plot(DL_grid, M2)
     
-    plt.xlim(0, system["D_S"] + 0.5)
+    plt.xlim(0, D_S + 0.5)
     plt.ylim(0, 2)
     plt.grid()
 
@@ -396,3 +394,4 @@ def plot_mass_relation(system_name, method):
     plt.title(title)
     plt.legend(loc='upper right')
     plt.show()
+    plt.close()
