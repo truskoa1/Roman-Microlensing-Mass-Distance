@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rcParams['figure.figsize'] = (10, 6)
+plt.rcParams['figure.figsize'] = (8, 6)
 
 from mass_relations import F_L, M_FL, theta_E, pi_E, M_thetaE, M_piE
 from uncertainties import sigmaM_FL, sigmaM_thetaE, sigmaM_piE
@@ -11,7 +11,27 @@ def plot_mass_relation(M_L_fid, D_L_fid, method, D_S=8.0):
     DL_grid = np.linspace(0.1, D_S - 0.01, 1000)
 
     # Defining the different combinations of observables to plot to constrain the lens mass
-    if method == "thetaE_piE":
+    if method == "thetaE": 
+
+        thetaE_fid = theta_E(
+            M_L_fid,
+            D_L_fid,
+            D_S
+        )
+
+        M1 = M_thetaE(thetaE_fid, DL_grid, D_S)
+
+        sigma_thetaE_fid = 0.1 * thetaE_fid
+
+        sigma1 = sigmaM_thetaE(
+            M1,                    # mass array
+            thetaE_fid,            # fixed theta_E
+            sigma_thetaE_fid,      # uncertainty in theta_E            
+        )
+
+        title = r'$\theta_E$ and $\pi_E$ Constraints on Lens Mass'
+
+    elif method == "thetaE_piE":
 
         thetaE_fid = theta_E(
             M_L_fid,
@@ -470,6 +490,15 @@ def plot_mass_relation(M_L_fid, D_L_fid, method, D_S=8.0):
         alpha=0.5,
         )
 
+    elif method == "thetaE":
+        plt.plot(DL_grid, M1)
+        plt.fill_between(
+        DL_grid,
+        M1 - sigma1,
+        M1 + sigma1,
+        alpha=0.3,
+        )
+
     else:   
         plt.plot(DL_grid, M1)
         plt.plot(DL_grid, M2)
@@ -478,8 +507,15 @@ def plot_mass_relation(M_L_fid, D_L_fid, method, D_S=8.0):
     plt.ylim(0, 2)
     plt.grid()
 
-    plt.xlabel(r'Lens Distance $D_L$ (kpc)', size=13)
-    plt.ylabel(r'Lens Mass $M_L$ ($M_{\odot}$)', size=13)
+    # error bar for point at (3, 0.5). I plugged in the uncertainties of thetaE and piE (set to 10%) to the equations for error in mass and distance. I plan on streamlining this so that it works for all cases, but onlly did it for SURP presentation for now.
+    #x = [3]
+    #y = [0.5]
+    #x_error = [0.2652]
+    #y_error = [0.0707]
+    #plt.errorbar(x, y, xerr=x_error, yerr=y_error, fmt='o', color='black', capsize=5)
+
+    plt.xlabel(r'Lens Distance $D_L$ (kpc), $D_L = D_S / z$', size=13)
+    plt.ylabel(r'Lens Mass $M_L$ ($M_{\odot}$) = $m_L$', size=13)
     plt.title(title, size=14)
     plt.legend(loc='upper right', fontsize=13)
     plt.show()
